@@ -26,7 +26,7 @@ public class Diary {
 
     private Boolean access;
 
-    @Lob
+    @Column(length = 500)
     private String content;
 
     private Integer diaryFrame;
