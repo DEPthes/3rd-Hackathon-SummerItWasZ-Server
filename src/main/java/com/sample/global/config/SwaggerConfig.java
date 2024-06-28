@@ -18,8 +18,8 @@ public class SwaggerConfig {
 
     private Info apiInfo() {
         return new Info()
-                .title("Temp API")
-                .description("Temp API 목록")
+                .title("여름이었다ㅋ API")
+                .description("여름이었다ㅋ 목록")
                 .version("1.0.0");
     }
 }
