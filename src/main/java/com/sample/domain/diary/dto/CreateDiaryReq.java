@@ -28,7 +28,7 @@ public class CreateDiaryReq {
     private Boolean access;
 
     @NotNull
-    @Size(max = 300)
+//    @Size(max = 300)
     private String content;
 
     @NotNull
