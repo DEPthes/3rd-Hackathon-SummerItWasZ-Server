@@ -1,7 +1,7 @@
 spring:
   profiles:
     # 로컬 : "h2"  ||  RDS : "rds"로 사용
-    active: ["rds", "s3", "swagger"]
+    active: ["h2", "s3", "swagger"]
 
 logging:
   level:

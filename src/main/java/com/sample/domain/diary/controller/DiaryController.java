@@ -15,15 +15,21 @@ public class DiaryController {
 
     private final DiaryService diaryService;
 
-
     @PostMapping("/changeGpt")
     public ResponseEntity<?> changeGpt(@RequestParam String content) throws JsonProcessingException {
-//        System.out.println("createDiaryRes.getContent() = " + createDiaryRes.getContent());
         return diaryService.changeGpt(content);
     }
 
     @PostMapping
     public ResponseEntity<?> createDiary(@RequestBody @Valid CreateDiaryReq createDiaryRes) {
         return diaryService.createDiary(createDiaryRes);
+    }
+
+    @GetMapping("/final/{diaryId}/{code}")
+    public ResponseEntity<?> finalDiary(
+            @PathVariable(value = "diaryId") Long diaryId,
+            @PathVariable(value = "code") String code
+    ) {
+        return diaryService.finalDiary(diaryId, code);
     }
 }

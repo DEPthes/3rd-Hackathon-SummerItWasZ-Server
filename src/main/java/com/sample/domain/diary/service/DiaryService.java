@@ -4,21 +4,32 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.sample.domain.diary.domain.Diary;
 import com.sample.domain.diary.dto.CreateDiaryReq;
 import com.sample.domain.diary.dto.CreateDiaryRes;
+import com.sample.domain.diary.dto.DiaryDetailRes;
 import com.sample.domain.diary.repository.DiaryRepository;
 import com.sample.domain.gpt.service.impl.GptServiceImpl;
+import com.sample.global.DefaultAssert;
 import com.sample.global.payload.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.security.SecureRandom;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class DiaryService {
+
     private final GptServiceImpl gptService;
 
     private final DiaryRepository diaryRepository;
+
+
+    public ResponseEntity<?> changeGpt(String content) throws JsonProcessingException {
+        String assistantMsg = gptService.getAssistantMsg(content);
+        return ResponseEntity.ok(assistantMsg);
+    }
+
     public ResponseEntity<?> createDiary(CreateDiaryReq createDiaryReq) {
 
         String title = createDiaryReq.getTitle();
@@ -52,8 +63,29 @@ public class DiaryService {
         return ResponseEntity.ok(apiResponse);
     }
 
-    private String generateCode() {
+    public ResponseEntity<?> finalDiary(Long diaryId, String code) {
+        Optional<Diary> findDiary = diaryRepository.findByIdAndCode(diaryId, code);
+        DefaultAssert.isTrue(findDiary.isPresent(), "존재하지 않는 일기입니다.");
+        Diary diary = findDiary.get();
 
+        DiaryDetailRes diaryDetailRes = DiaryDetailRes.builder()
+                .title(diary.getTitle())
+                .diaryDate(diary.getDiaryDate())
+                .nickname(diary.getNickname())
+                .content(diary.getContent())
+                .diaryFrame(diary.getDiaryFrame())
+                .build();
+
+        ApiResponse apiResponse = ApiResponse.builder()
+                .check(true)
+                .information(diaryDetailRes)
+                .build();
+
+        return ResponseEntity.ok(apiResponse);
+    }
+
+
+    private String generateCode() {
         SecureRandom random = new SecureRandom();
 
         long randomNumber = random.nextLong(2821109907455L + 1);
@@ -62,11 +94,5 @@ public class DiaryService {
         code = String.format("%8s", code).replace(' ', '0');
 
         return code;
-    }
-
-    public ResponseEntity<?> changeGpt(String content) throws JsonProcessingException {
-//        String content = createDiaryReq.getContent();
-        String assistantMsg = gptService.getAssistantMsg(content);
-        return ResponseEntity.ok(assistantMsg);
     }
 }

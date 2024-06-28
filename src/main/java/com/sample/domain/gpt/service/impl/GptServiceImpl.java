@@ -51,12 +51,9 @@ public class GptServiceImpl implements GptService {
         RestTemplate restTemplate = new RestTemplate();
         ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.POST, request, String.class);
 
-//        log.info(response.getBody());
-
         return objectMapper.readTree(response.getBody());
     }
 
-//    @
     public String getAssistantMsg(String userMsg) throws JsonProcessingException {
         JsonNode jsonNode = callChatGpt(userMsg);
         String content = jsonNode.path("choices").get(0).path("message").path("content").asText();
