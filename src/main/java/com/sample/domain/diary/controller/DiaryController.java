@@ -21,10 +21,9 @@ public class DiaryController {
 //        System.out.println("createDiaryRes.getContent() = " + createDiaryRes.getContent());
         return diaryService.changeGpt(content);
     }
+
     @PostMapping
-    public ResponseEntity<?> createDiary(@RequestBody @Valid CreateDiaryReq createDiaryRes){
-//        System.out.println("createDiaryRes.getContent() = " + createDiaryRes.getContent());
+    public ResponseEntity<?> createDiary(@RequestBody @Valid CreateDiaryReq createDiaryRes) {
         return diaryService.createDiary(createDiaryRes);
     }
-
 }

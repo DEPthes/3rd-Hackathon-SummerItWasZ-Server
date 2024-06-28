@@ -31,16 +31,15 @@ public class DiaryService {
 
         Diary diary = Diary.builder()
                 .nickname(createDiaryReq.getNickname())
-                .title(createDiaryReq.getTitle())
+                .title(title)
                 .diaryDate(createDiaryReq.getDiaryDate())
                 .access(createDiaryReq.getAccess())
                 .content(createDiaryReq.getContent())
                 .diaryFrame(createDiaryReq.getDiaryFrame())
-//                .code()
+                .code(generateCode())
                 .build();
-
-
         diaryRepository.save(diary);
+
         CreateDiaryRes createDiaryRes = CreateDiaryRes.builder()
                 .id(diary.getId())
                 .code(diary.getCode())
@@ -49,7 +48,6 @@ public class DiaryService {
                 .check(true)
                 .information(createDiaryRes)
                 .build();
-        System.out.println(apiResponse.getInformation());
 
         return ResponseEntity.ok(apiResponse);
     }

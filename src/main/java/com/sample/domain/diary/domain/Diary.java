@@ -44,3 +44,4 @@ public class Diary {
         this.code = code;
     }
 }
+
