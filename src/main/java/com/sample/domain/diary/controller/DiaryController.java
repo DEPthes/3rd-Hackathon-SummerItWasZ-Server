@@ -25,11 +25,15 @@ public class DiaryController {
         return diaryService.createDiary(createDiaryRes);
     }
 
-    @GetMapping("/final/{diaryId}/{code}")
+    @GetMapping("/{diaryId}/{code}")
     public ResponseEntity<?> finalDiary(
             @PathVariable(value = "diaryId") Long diaryId,
             @PathVariable(value = "code") String code
     ) {
         return diaryService.finalDiary(diaryId, code);
+    }
+    @GetMapping("/retrieveAll")
+    public ResponseEntity<?> retrieveAll() {
+        return diaryService.retrieveAll();
     }
 }
