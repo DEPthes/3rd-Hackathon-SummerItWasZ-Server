@@ -9,22 +9,34 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.security.SecureRandom;
+
 @Service
 @RequiredArgsConstructor
 public class DiaryService {
 
     private final DiaryRepository diaryRepository;
     public ResponseEntity<?> createDiary(CreateDiaryReq createDiaryReq) {
+
+        String title = createDiaryReq.getTitle();
+        StringBuffer sb = new StringBuffer();
+        if (title.length() > 20) {
+            sb.append(title);
+            sb.insert(20, "\n");
+            title = sb.toString();
+        }
+
         Diary diary = Diary.builder()
                 .nickname(createDiaryReq.getNickname())
-                .title(createDiaryReq.getTitle())
+                .title(title)
                 .diaryDate(createDiaryReq.getDiaryDate())
                 .access(createDiaryReq.getAccess())
                 .content(createDiaryReq.getContent())
                 .diaryFrame(createDiaryReq.getDiaryFrame())
-//                .code()
+                .code(generateCode())
                 .build();
         diaryRepository.save(diary);
+
         CreateDiaryRes createDiaryRes = CreateDiaryRes.builder()
                 .id(diary.getId())
                 .code(diary.getCode())
@@ -33,8 +45,19 @@ public class DiaryService {
                 .check(true)
                 .information(createDiaryRes)
                 .build();
-        System.out.println(apiResponse.getInformation());
 
         return ResponseEntity.ok(apiResponse);
+    }
+
+    private String generateCode() {
+
+        SecureRandom random = new SecureRandom();
+
+        long randomNumber = random.nextLong(2821109907455L + 1);
+        String code = Long.toString(randomNumber, 36);
+
+        code = String.format("%8s", code).replace(' ', '0');
+
+        return code;
     }
 }

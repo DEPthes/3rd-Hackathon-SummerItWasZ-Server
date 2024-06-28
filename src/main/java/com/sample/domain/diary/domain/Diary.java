@@ -26,15 +26,15 @@ public class Diary {
 
     private Boolean access;
 
+    @Lob
     private String content;
 
-    @Enumerated(EnumType.STRING)
-    private DiaryFrame diaryFrame;
+    private Integer diaryFrame;
 
     private String code;
 
     @Builder
-    public Diary(String nickname, String title, LocalDate diaryDate, Boolean access, String content, DiaryFrame diaryFrame, String code) {
+    public Diary(String nickname, String title, LocalDate diaryDate, Boolean access, String content, Integer diaryFrame, String code) {
         this.nickname = nickname;
         this.title = title;
         this.diaryDate = diaryDate;
