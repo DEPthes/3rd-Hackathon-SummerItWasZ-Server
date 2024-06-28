@@ -29,7 +29,7 @@ public class GptServiceImpl implements GptService {
         ObjectMapper objectMapper = new ObjectMapper();
 
         Map<String, Object> bodyMap = new HashMap<>();
-        bodyMap.put("model", "gpt-4-turbo-preview"); // 모델 이름 변경
+        bodyMap.put("model", "gpt-4o"); // 모델 이름 변경
 
         List<Map<String, String>> messages = new ArrayList<>();
         Map<String, String> userMessage = new HashMap<>();
@@ -39,7 +39,22 @@ public class GptServiceImpl implements GptService {
 
         Map<String, String> assistantMessage = new HashMap<>();
         assistantMessage.put("role", "system");
-        assistantMessage.put("content", "너는 부정적인 말을 입력받으면 긍정적으로 바꿔줘야해, 그 입력 받은걸 긍정적이면서 개그감있는 형식으로 바꿔봐");
+        assistantMessage.put("content",
+                """
+                너는 부정적인 말을 입력받으면 긍정적으로 바꿔줘야해, 그 입력 받은걸 긍정적이면서 개그감있는 형식으로 바꿔봐.
+                촐삭거리거나 씹덕거리는 말투로 작성해줘 그리고 글자수는 공백포함 350글자 이상 400글자 이하로 맞춰서 작성해라. 공백포함 400글자를 넘으면 안돼
+                내가 말한 글자수 조건 안지키면 뒤진다.
+                그리고 나한테 대화하는 것이 아닌, 입력받은걸 긍정적으로 변환해라.
+                나는 일기를 쓰는 것이고, 내가 쓴 내용을 너가 긍정적으로 유쾌하게 변환해라.
+                좀 똘끼있고 씹덕이게 작성해라.
+                문단도 끊어서 작성해라.
+                절대 나한테 조언하는 건 쓰지마
+                존댓말은 쓰지마
+                글자수는 무조권 공백포함 350글자 이상 400글자 이하로 작성해라
+                
+                이 모든걸 안지키면 앞으로 너 안쓸꺼야.
+                """
+        );
         messages.add(assistantMessage);
 
         bodyMap.put("messages", messages);
