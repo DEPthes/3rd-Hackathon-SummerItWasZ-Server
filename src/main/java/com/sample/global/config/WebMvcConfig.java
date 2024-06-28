@@ -10,13 +10,14 @@ public class WebMvcConfig implements WebMvcConfigurer {
 
     private final long MAX_AGE_SECS = 3600;
 
-    @Value("${app.cors.allowed-origins}")
-    private String[] allowedOrigins;
+//    @Value("${app.cors.allowed-origins}")
+//    private String[] allowedOrigins;
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedOrigins(allowedOrigins)
+                .allowedOrigins("http://localhost:3000")
+                .allowedOrigins("https://summer-it-was-z.netlify.app")
                 .allowedMethods("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS")
                 .allowedHeaders("*")
                 .allowCredentials(true)
