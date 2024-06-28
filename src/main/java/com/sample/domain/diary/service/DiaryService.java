@@ -106,7 +106,7 @@ public class DiaryService {
     public ResponseEntity<?> retrieveAll() {
         List<Diary> allDiary = diaryRepository.findAll();
         List<Diary> accessibleDiaries = allDiary.stream()
-                .filter(Diary::getAccess)
+                .filter(diary -> !diary.getAccess())
                 .collect(Collectors.toList());
 
         Collections.reverse(accessibleDiaries);
