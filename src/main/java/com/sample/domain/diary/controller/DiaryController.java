@@ -1,5 +1,6 @@
 package com.sample.domain.diary.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.sample.domain.diary.dto.CreateDiaryReq;
 import com.sample.domain.diary.service.DiaryService;
 import jakarta.validation.Valid;
@@ -14,8 +15,15 @@ public class DiaryController {
 
     private final DiaryService diaryService;
 
+
+    @PostMapping("/changeGpt")
+    public ResponseEntity<?> changeGpt(@RequestParam String content) throws JsonProcessingException {
+//        System.out.println("createDiaryRes.getContent() = " + createDiaryRes.getContent());
+        return diaryService.changeGpt(content);
+    }
     @PostMapping
     public ResponseEntity<?> createDiary(@RequestBody @Valid CreateDiaryReq createDiaryRes){
+//        System.out.println("createDiaryRes.getContent() = " + createDiaryRes.getContent());
         return diaryService.createDiary(createDiaryRes);
     }
 

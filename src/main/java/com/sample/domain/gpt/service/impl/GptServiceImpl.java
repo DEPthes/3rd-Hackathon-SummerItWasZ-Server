@@ -56,11 +56,11 @@ public class GptServiceImpl implements GptService {
         return objectMapper.readTree(response.getBody());
     }
 
-    @Override
-    public ResponseEntity<?> getAssistantMsg(String userMsg) throws JsonProcessingException {
+//    @
+    public String getAssistantMsg(String userMsg) throws JsonProcessingException {
         JsonNode jsonNode = callChatGpt(userMsg);
         String content = jsonNode.path("choices").get(0).path("message").path("content").asText();
 
-        return ResponseEntity.status(HttpStatus.OK).body(content.replaceAll("\"", "")+"\n여름이었다ㅋ");
+        return content.replaceAll("\"", "")+"\n여름이었다ㅋ";
     }
 }

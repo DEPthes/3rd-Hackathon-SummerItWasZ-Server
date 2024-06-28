@@ -22,9 +22,9 @@ public class GptController {
                 this.gptService = gptService;
         }
 
-        @PostMapping
-        public ResponseEntity<?> getAssistantMsg(@RequestParam String msg) throws JsonProcessingException {
-                return gptService.getAssistantMsg(msg);
-        }
+//        @PostMapping
+//        public ResponseEntity<?> getAssistantMsg(@RequestParam String msg) throws JsonProcessingException {
+//                return gptService.getAssistantMsg(msg);
+//        }
 }
 

@@ -1,9 +1,11 @@
 package com.sample.domain.diary.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.sample.domain.diary.domain.Diary;
 import com.sample.domain.diary.dto.CreateDiaryReq;
 import com.sample.domain.diary.dto.CreateDiaryRes;
 import com.sample.domain.diary.repository.DiaryRepository;
+import com.sample.domain.gpt.service.impl.GptServiceImpl;
 import com.sample.global.payload.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +16,7 @@ import java.security.SecureRandom;
 @Service
 @RequiredArgsConstructor
 public class DiaryService {
+    private final GptServiceImpl gptService;
 
     private final DiaryRepository diaryRepository;
     public ResponseEntity<?> createDiary(CreateDiaryReq createDiaryReq) {
@@ -28,15 +31,16 @@ public class DiaryService {
 
         Diary diary = Diary.builder()
                 .nickname(createDiaryReq.getNickname())
-                .title(title)
+                .title(createDiaryReq.getTitle())
                 .diaryDate(createDiaryReq.getDiaryDate())
                 .access(createDiaryReq.getAccess())
                 .content(createDiaryReq.getContent())
                 .diaryFrame(createDiaryReq.getDiaryFrame())
-                .code(generateCode())
+//                .code()
                 .build();
-        diaryRepository.save(diary);
 
+
+        diaryRepository.save(diary);
         CreateDiaryRes createDiaryRes = CreateDiaryRes.builder()
                 .id(diary.getId())
                 .code(diary.getCode())
@@ -45,6 +49,7 @@ public class DiaryService {
                 .check(true)
                 .information(createDiaryRes)
                 .build();
+        System.out.println(apiResponse.getInformation());
 
         return ResponseEntity.ok(apiResponse);
     }
@@ -59,5 +64,11 @@ public class DiaryService {
         code = String.format("%8s", code).replace(' ', '0');
 
         return code;
+    }
+
+    public ResponseEntity<?> changeGpt(String content) throws JsonProcessingException {
+//        String content = createDiaryReq.getContent();
+        String assistantMsg = gptService.getAssistantMsg(content);
+        return ResponseEntity.ok(assistantMsg);
     }
 }
